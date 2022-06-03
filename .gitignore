@@ -1,5 +1,6 @@
 node_modules/
 dst/
 out/
+localTests/
 .vscode/settings.json
 .DS_Store
