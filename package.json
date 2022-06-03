@@ -35,5 +35,8 @@
     "nyc": "^15.1.0",
     "ts-node": "^10.5.0",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@s4tk/models": "^0.4.1"
   }
 }
