@@ -1,5 +1,7 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
 
+type ManifestFileType = "properties" | "json";
+
 /**
  * Optional arguments for indexing tuning.
  */
@@ -15,9 +17,21 @@ interface IndexingOptions extends
 interface ExtractionOptions extends
   IndexingOptions,
   Partial<{
-    /** Whether or not to use type folders. False by default. */
-    typeFolders: boolean;
+    /**
+     * What kind of manifest to generate for strings. If null, no manifest is
+     * generated. Null by default.
+     */
+    stringManifest: ManifestFileType;
+
+    /**
+     * What kind of manifest to generate for tuning. If null, no manifest is
+     * generated. Null by default.
+     */
+    tuningManifest: ManifestFileType;
 
     /** Whether or not to use class folders. False by default. */
-    classFolders: boolean;
+    useClassFolders: boolean;
+
+    /** Whether or not to use type folders. False by default. */
+    useTypeFolders: boolean;
   }> { }
