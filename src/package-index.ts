@@ -1,8 +1,9 @@
 import fs from "fs";
-import { CombinedTuningResource, Package, StringTableResource, XmlResource } from "@s4tk/models";
+import { Package, CombinedTuningResource, StringTableResource, XmlResource } from "@s4tk/models";
 import { IndexingOptions } from "./types";
-import { BinaryResourceType, StringTableLocale, TuningResourceType } from "@s4tk/models/enums";
+import { BinaryResourceType, StringTableLocale } from "@s4tk/models/enums";
 import { formatStringKey } from "@s4tk/hashing/formatting";
+import { resourceIsExtractable } from "./helpers";
 
 /**
  * TODO:
@@ -14,11 +15,8 @@ export default class PackageIndex {
   /** Maps tuning IDs (as decimal strings) to their file names. */
   readonly tuningMap: Map<string, string>;
 
-  /** Keeps track of which paths lead to packages containing combined tuning. */
-  readonly combinedTuningPaths: string[];
-
-  /** Locale of string tables to load. */
-  readonly targetLocale: StringTableLocale;
+  /** A set of paths to packages that contain tuning and/or SimData. */
+  readonly extractablePaths: Set<string>;
 
   get commentMap(): Map<string, string> {
     const commentMap = new Map<string, string>();
@@ -27,11 +25,10 @@ export default class PackageIndex {
     return commentMap;
   }
 
-  constructor(options?: IndexingOptions) {
+  constructor(private _options?: IndexingOptions) {
     this.stringMap = new Map();
     this.tuningMap = new Map();
-    this.combinedTuningPaths = [];
-    this.targetLocale = options?.locale ?? StringTableLocale.English;
+    this.extractablePaths = new Set();
   }
 
   //#region Public Methods
@@ -44,15 +41,24 @@ export default class PackageIndex {
   readPackage(path: string) {
     const buffer = fs.readFileSync(path);
 
+    let pathAddedToSet = false;
+    const addPathToSet = () => {
+      this.extractablePaths.add(path);
+      pathAddedToSet = true;
+    }
+
+    const targetLocale = this._options?.locale ?? StringTableLocale.English;
+
     const entries = Package.extractResources(buffer, {
       resourceFilter(type, _, instance) {
-        if (type === BinaryResourceType.CombinedTuning || (type in TuningResourceType)) {
-          return true;
+        if (resourceIsExtractable(type)) {
+          if (!pathAddedToSet) addPathToSet();
+          return type !== BinaryResourceType.SimData;
         } else if (type === BinaryResourceType.StringTable) {
-          return StringTableLocale.getLocale(instance) === this._targetLocale;
-        } else {
-          return false;
+          return StringTableLocale.getLocale(instance) === targetLocale;
         }
+
+        return false;
       }
     });
 
@@ -60,7 +66,6 @@ export default class PackageIndex {
       if (key.type === BinaryResourceType.StringTable) {
         this._addStringTable(value as StringTableResource);
       } else if (key.type === BinaryResourceType.CombinedTuning) {
-        this.combinedTuningPaths.push(path);
         this._addCombinedTuning(value as CombinedTuningResource);
       } else {
         this._addTuning(value as XmlResource);
