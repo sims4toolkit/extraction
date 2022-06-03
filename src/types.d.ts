@@ -29,8 +29,8 @@ interface ExtractionOptions extends
      */
     tuningManifest: ManifestFileType;
 
-    /** Whether or not to use class folders. False by default. */
-    useClassFolders: boolean;
+    /** Whether or not to use class/group folders. False by default. */
+    useSecondaryFolders: boolean;
 
     /** Whether or not to use type folders. False by default. */
     useTypeFolders: boolean;

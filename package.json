@@ -13,6 +13,7 @@
   "main": "./extraction.js",
   "scripts": {
     "clean": "rm -rf ./dst/**",
+    "clean:out": "rm -rf ./out/**",
     "dev": "npm run clean ; tsc --watch",
     "build": "npm run clean ; tsc ; node scripts/prepublish.cjs",
     "publish": "npm run build && sh scripts/publish.sh",
