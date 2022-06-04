@@ -1,7 +1,7 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourcePosition } from "@s4tk/models/types";
-import type { PackagePaths } from "./types";
+import type { PackagePaths } from "../types";
 
 interface PathAndPosition {
   filepath: string;

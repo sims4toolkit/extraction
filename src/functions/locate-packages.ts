@@ -1,8 +1,8 @@
 import path from "path";
 import glob from "glob";
 import { StringTableLocale } from "@s4tk/models/enums";
-import { getLocaleCode } from "./helpers";
-import { PackagePaths } from "./types";
+import { getLocaleCode } from "../helpers";
+import { PackagePaths } from "../types";
 
 //#region Constants
 
