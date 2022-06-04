@@ -9,7 +9,7 @@ import type { FileMap, PackagePaths, SimulationIndex } from "../types";
  * 
  * @param filepaths Absolute paths of packages to index
  */
-export function indexSimulationFiles(filepaths: PackagePaths): SimulationIndex {
+export function indexSimulationPackages(filepaths: PackagePaths): SimulationIndex {
   const latestCombineds = new Map<number, PathAndPosition>();
   const latestSimDatas = new Map<bigint, PathAndPosition>();
 
@@ -52,7 +52,7 @@ export function indexSimulationFiles(filepaths: PackagePaths): SimulationIndex {
  * 
  * @param filepaths Absolute paths of packages to index
  */
-export function indexStringTableFiles(filepaths: PackagePaths): FileMap {
+export function indexStringTablePackages(filepaths: PackagePaths): FileMap {
   const latestStbls = new Map<bigint, PathAndPosition>();
 
   const indexPackage = (filepath: string) => {
