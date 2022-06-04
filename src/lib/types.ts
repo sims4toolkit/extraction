@@ -1,3 +1,4 @@
+import { StringTableLocale } from "@s4tk/models/enums";
 import type { ResourcePosition } from "@s4tk/models/types";
 
 /**
@@ -22,24 +23,45 @@ export interface SimulationIndex {
   simdata: FileMap;
 }
 
-// /**
-//  * Optional arguments for indexing tuning.
-//  */
-// interface IndexingOptions extends
-//   Partial<{
-//     /** Locale of STBLs to index. English by default. */
-//     locale: StringTableLocale;
-//   }> { }
+/**
+ * Optional arguments for extracting tuning.
+ */
+export interface ExtractionOptions extends
+  Partial<{
+    /**
+     * Whether or not SimData should be extracted. True by default.
+     */
+    extractSimData: boolean;
 
-// /**
-//  * Optional arguments for extracting tuning.
-//  */
-// interface ExtractionOptions extends
-//   IndexingOptions,
-//   Partial<{
-//     /** Whether or not to use class/group folders. False by default. */
-//     useSecondaryFolders: boolean;
+    /**
+     * Whether or not tuning should be extracted from combined tuning. True by
+     * default.
+     */
+    extractTuning: boolean;
 
-//     /** Whether or not to use type folders. False by default. */
-//     useTypeFolders: boolean;
-//   }> { }
+    /**
+     * Whether or not comments should be added for string keys and tuning IDs.
+     * True by default.
+     */
+    restoreComments: boolean;
+
+    /**
+     * If restoring comments, this determines which language is used to restore
+     * string comments. English by default.
+     */
+    targetLocale: StringTableLocale;
+
+    /**
+     * Whether or not to use primary subfolders when writing the files. This 
+     * means tuning type for tuning files, and "SimData" for SimData files.
+     * True by default.
+     */
+    usePrimarySubfolders: boolean;
+
+    /**
+     * Whether or not to use secondary subfolders when writing the files. This 
+     * means class for tuning files, and group for SimData files. True by
+     * default.
+     */
+    useSecondarySubfolders: boolean;
+  }> { }
