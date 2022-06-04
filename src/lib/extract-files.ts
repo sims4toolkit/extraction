@@ -26,43 +26,70 @@ export function extractFiles(
 
   // creating stbl index
   if (options.restoreComments) {
+    options.eventListener?.("index-stbl-start");
     const stblPaths = locateStringTablePackages(options.targetLocale, srcDirs);
     var stblIndex = indexStringTablePackages(stblPaths);
+    options.eventListener?.("index-stbl-end");
   }
 
   // creating simulation index
   if (options.extractTuning || options.extractSimData) {
+    options.eventListener?.("index-sim-start");
     var simPaths = locateSimulationPackages(srcDirs);
     var simIndex = indexSimulationPackages(simPaths, options as ExtractionOptions);
+    options.eventListener?.("index-sim-end");
   }
 
   // building comment map
   let commentMap: Map<string, string>;
   if (options.restoreComments) {
+    options.eventListener?.("comments-start");
     commentMap = new Map();
     buildStringTableMap(stblIndex, commentMap);
     buildSimulationMap(simIndex, commentMap);
+    options.eventListener?.("comments-end");
   }
 
   // extracting tuning
   if (options.extractTuning) {
+    options.eventListener?.("extract-tuning-start");
+    let currentCbt = 0;
     simIndex.combined.forEach((positions, filepath) => {
       const cbt = Package.fetchResources<CombinedTuningResource>(filepath, positions);
       cbt.forEach(entry => {
-        entry.value.toTuning({ commentMap }).forEach(tuning => {
+        const tunings = entry.value.toTuning({ commentMap });
+        tunings.forEach((tuning, i) => {
           writeTuningFile(outDir, entry.key.group, tuning, options as ExtractionOptions);
+          options.eventListener?.(
+            "tuning-written",
+            currentCbt,
+            simIndex.combined.size,
+            i + 1,
+            tunings.length
+          );
         });
       });
+      currentCbt++;
     });
+    options.eventListener?.("extract-tuning-end");
   }
 
   // extracting simdata
   if (options.extractSimData) {
+    let currentDbpf = 0;
     simIndex.simdata.forEach((positions, filepath) => {
       const simdatas = Package.fetchResources<SimDataResource>(filepath, positions);
-      simdatas.forEach(entry => {
+      simdatas.forEach((entry, i) => {
         writeSimDataFile(outDir, entry, options as ExtractionOptions);
+        options.eventListener?.(
+          "simdata-written",
+          currentDbpf,
+          simIndex.simdata.size,
+          i + 1,
+          simdatas.length
+        );
       });
+      currentDbpf++;
     });
   }
 }
