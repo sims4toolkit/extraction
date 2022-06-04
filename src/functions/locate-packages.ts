@@ -3,12 +3,6 @@ import glob from "glob";
 import { StringTableLocale } from "@s4tk/models/enums";
 import { PackagePaths } from "../types";
 
-// FIXME: temporary
-const sourceDirectories = [
-  "/Applications/The Sims 4 Packs",
-  "/Applications/The Sims 4.app/Contents",
-];
-
 /**
  * Finds paths to all packages containing simulation files.
  * 
