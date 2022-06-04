@@ -19,7 +19,7 @@ interface SimulationIndex {
  * Indexes all of the Combined Tuning and SimData in the packages at the given
  * file paths.
  * 
- * @param filepaths Paths to packages to index
+ * @param filepaths Absolute paths of packages to index
  */
 export function indexSimulationFiles(filepaths: PackagePaths): SimulationIndex {
   const latestCombineds = new Map<number, PathAndPosition>();
@@ -53,22 +53,58 @@ export function indexSimulationFiles(filepaths: PackagePaths): SimulationIndex {
   filepaths.source.forEach(indexPackage);
   filepaths.delta.forEach(indexPackage);
 
-  const createFileMap = (map: Map<any, PathAndPosition>): FileMap => {
-    const fileMap: FileMap = new Map();
-
-    map.forEach(({ filepath, position }) => {
-      if (fileMap.has(filepath)) {
-        fileMap.get(filepath).push(position);
-      } else {
-        fileMap.set(filepath, [position]);
-      }
-    });
-
-    return fileMap;
-  };
-
   return {
     combined: createFileMap(latestCombineds),
     simdata: createFileMap(latestSimDatas)
   };
 }
+
+/**
+ * Indexes all of the string tables in the packages at the given file paths.
+ * 
+ * @param filepaths Absolute paths of packages to index
+ */
+export function indexStringTableFiles(filepaths: PackagePaths): FileMap {
+  const latestStbls = new Map<bigint, PathAndPosition>();
+
+  const indexPackage = (filepath: string) => {
+    const keys: bigint[] = [];
+
+    Package.indexResources(filepath, {
+      resourceFilter(type, _, instance) {
+        if (type === BinaryResourceType.StringTable) {
+          keys.push(instance);
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }).forEach((position, i) => {
+      const key = keys[i];
+      latestStbls.set(key, { filepath, position });
+    });
+  };
+
+  filepaths.source.forEach(indexPackage);
+  filepaths.delta.forEach(indexPackage);
+
+  return createFileMap(latestStbls);
+}
+
+//#region Helpers
+
+function createFileMap(map: Map<any, PathAndPosition>): FileMap {
+  const fileMap: FileMap = new Map();
+
+  map.forEach(({ filepath, position }) => {
+    if (fileMap.has(filepath)) {
+      fileMap.get(filepath).push(position);
+    } else {
+      fileMap.set(filepath, [position]);
+    }
+  });
+
+  return fileMap;
+}
+
+//#endregion Helpers
