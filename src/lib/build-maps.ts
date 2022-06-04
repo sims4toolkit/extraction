@@ -1,7 +1,7 @@
 import type { CombinedTuningResource, StringTableResource } from "@s4tk/models";
 import { Package } from "@s4tk/models";
 import { formatStringKey } from "@s4tk/hashing/formatting";
-import type { FileMap, SimulationIndex } from "../types";
+import type { FileMap, SimulationIndex } from "./types";
 
 /**
  * Creates a map from tuning IDs (as decimal strings) to their file names.

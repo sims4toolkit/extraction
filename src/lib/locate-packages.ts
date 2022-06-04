@@ -1,7 +1,7 @@
 import path from "path";
 import glob from "glob";
 import { StringTableLocale } from "@s4tk/models/enums";
-import { PackagePaths } from "../types";
+import { PackagePaths } from "./types";
 
 /**
  * Finds paths to all packages containing simulation files.

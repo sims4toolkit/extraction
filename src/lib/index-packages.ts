@@ -1,7 +1,7 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
 import type { ResourcePosition } from "@s4tk/models/types";
-import type { FileMap, PackagePaths, SimulationIndex } from "../types";
+import type { FileMap, PackagePaths, SimulationIndex } from "./types";
 
 /**
  * Indexes all of the Combined Tuning and SimData in the packages at the given

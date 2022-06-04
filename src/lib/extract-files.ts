@@ -7,6 +7,7 @@ import type { ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
+import { ExtractionOptions } from "./types";
 
 // FIXME: delete
 const TEMPORARY_USER_LOCALE = 0;
@@ -17,8 +18,13 @@ const TEMPORARY_USER_LOCALE = 0;
  * 
  * @param srcDirs Array of directories that contain packages to extract from
  * @param outDir Directory to output all extracted files to
+ * @param options Options to configure
  */
-export function extractFiles(srcDirs: string[], outDir: string) {
+export function extractFiles(
+  srcDirs: string[],
+  outDir: string,
+  options?: ExtractionOptions
+) {
   // creating stbl index
   const stblPaths = locateStringTablePackages(TEMPORARY_USER_LOCALE, srcDirs);
   const stblIndex = indexStringTablePackages(stblPaths);
