@@ -1,4 +1,4 @@
-import { extractFiles } from "./functions/extract-files";
+import { extractFiles } from "./lib/extract-files";
 
 export {
   extractFiles
