@@ -1,4 +1,5 @@
 import type { StringTableLocale } from "@s4tk/models/enums";
+import type { ResourcePosition } from "@s4tk/models/types";
 
 type ManifestFileType = "properties" | "json";
 
@@ -8,6 +9,13 @@ type ManifestFileType = "properties" | "json";
 interface PackagePaths {
   source: string[];
   delta: string[];
+}
+
+type FileMap = Map<string, ResourcePosition[]>;
+
+interface SimulationIndex {
+  combined: FileMap;
+  simdata: FileMap;
 }
 
 /**

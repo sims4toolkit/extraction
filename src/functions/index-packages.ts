@@ -1,19 +1,7 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
 import type { ResourcePosition } from "@s4tk/models/types";
-import type { PackagePaths } from "../types";
-
-interface PathAndPosition {
-  filepath: string;
-  position: ResourcePosition;
-}
-
-type FileMap = Map<string, ResourcePosition[]>;
-
-interface SimulationIndex {
-  combined: FileMap;
-  simdata: FileMap;
-}
+import type { FileMap, PackagePaths, SimulationIndex } from "../types";
 
 /**
  * Indexes all of the Combined Tuning and SimData in the packages at the given
@@ -90,6 +78,15 @@ export function indexStringTableFiles(filepaths: PackagePaths): FileMap {
 
   return createFileMap(latestStbls);
 }
+
+//#region Types
+
+interface PathAndPosition {
+  filepath: string;
+  position: ResourcePosition;
+}
+
+//#endregion Types
 
 //#region Helpers
 
