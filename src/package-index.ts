@@ -39,8 +39,6 @@ export default class PackageIndex {
    * @param path Path of package to read and index
    */
   readPackage(path: string) {
-    const buffer = fs.readFileSync(path);
-
     let pathAddedToSet = false;
     const addPathToSet = () => {
       this.extractablePaths.add(path);
@@ -49,7 +47,7 @@ export default class PackageIndex {
 
     const targetLocale = this._options?.locale ?? StringTableLocale.English;
 
-    const entries = Package.extractResources(buffer, {
+    const entries = Package.streamResources(path, {
       resourceFilter(type, _, instance) {
         if (resourceIsExtractable(type)) {
           if (!pathAddedToSet) addPathToSet();

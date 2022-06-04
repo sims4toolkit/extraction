@@ -1,91 +1,28 @@
-import { BinaryResourceType, TuningResourceType } from "@s4tk/models/enums";
 import glob from "glob";
 import path from "path";
+import { BinaryResourceType, StringTableLocale, TuningResourceType } from "@s4tk/models/enums";
 
-/**
- * TODO:
- * 
- * @param dirs TODO:
- */
-export function locatePackages(dirs: string[]): string[] {
-  const paths: string[] = [];
-
-  dirs.forEach(dir => {
-    paths.push(...glob.sync(path.join(dir, "**", "*.package")));
-  });
-
-  return paths;
-}
-
-/**
- * TODO:
- * 
- * @param type TODO:
- */
-export function resourceIsExtractable(type: number): boolean {
-  return type === BinaryResourceType.CombinedTuning
-    || type === BinaryResourceType.SimData
-    || (type in TuningResourceType);
-}
-
-/**
- * Maps tuning names to their enum value.
- * 
- * Credit: This function was created by Lot51.
- * 
- * @param instanceName Name of tuning type as it appears in the 'i' attribute
- */
-export function getInstanceType(instanceName = "tuning"): TuningResourceType {
-  // FIXME: this probably doesn't work with TuningResourceType lol
-  switch (instanceName) {
-    case "relbit":
-      instanceName = "relationship_bit";
-      break;
-    case "scommodity":
-      instanceName = "static_commodity";
-      break;
-    case "career_situation":
-      instanceName = "situation";
-      break;
-    case "achievement_reward":
-      instanceName = "reward";
-      break;
-    case "Automation":
-    case "BuildBuy":
-    case "NativeBuildBuy":
-    case "Native_SeasonsWeather":
-    case "HsvTweakerSettings":
-    case "Video_Playlist":
-    case "Video_GlobalTuning":
-    case "Renderer_GlobalDofSettings":
-    case "Renderer_CensorTuning":
-    case "Renderer_FadeTuning":
-    case "Renderer_GlobalLightSettings":
-    case "Renderer_GlobalShadowSettings":
-    case "Renderer_GlobalHighlightSettings":
-    case "Renderer_GlobalSsaoSettings":
-    case "Renderer_GlobalVolLightScatteringSettings":
-    case "RegionSort":
-    case "Telemetry_MemoryUsageTelemetrySettings":
-    case "Telemetry_Tuning":
-    case "Thumbnail":
-    case "camera":
-    case "cascameratuning":
-    case "casocculttuning":
-    case "casoccultskintonetuning":
-    case "caslighting":
-    case "castuning":
-    case "casthumbnailparttuning":
-    case "casmodifiertuning":
-    case "client_tutorial":
-    case "maxis_lot":
-    case "simlighting":
-    case "tagsmetadata":
-    case "tagcategoriesmetadata":
-    case "tagstraitgroupmetadata":
-    case "tagtuning":
-      instanceName = "tuning";
+// FIXME: replace this with the one being added in @s4tk/models 0.4.3
+export function getLocaleCode(locale: StringTableLocale): string {
+  switch (locale) {
+    case StringTableLocale.English: return "ENG_US";
+    case StringTableLocale.ChineseSimplified: return "CHS_CN";
+    case StringTableLocale.ChineseTraditional: return "CHT_CN";
+    case StringTableLocale.Czech: return "CZE_CZ";
+    case StringTableLocale.Danish: return "DAN_DK";
+    case StringTableLocale.Dutch: return "DUT_NL";
+    case StringTableLocale.Finnish: return "FIN_FI";
+    case StringTableLocale.French: return "FRE_FR";
+    case StringTableLocale.German: return "GER_DE";
+    case StringTableLocale.Italian: return "ITA_IT";
+    case StringTableLocale.Japanese: return "JPN_JP";
+    case StringTableLocale.Korean: return "KOR_KR";
+    case StringTableLocale.Norwegian: return "NOR_NO";
+    case StringTableLocale.Polish: return "POL_PL";
+    case StringTableLocale.Portuguese: return "POR_BR";
+    case StringTableLocale.Russian: return "RUS_RU";
+    case StringTableLocale.Spanish: return "SPA_EA";
+    case StringTableLocale.Swedish: return "SWE_SE";
+    default: return undefined;
   }
-
-  return TuningResourceType[instanceName.toUpperCase()] ?? TuningResourceType.Tuning;
 }

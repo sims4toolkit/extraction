@@ -3,6 +3,14 @@ import type { StringTableLocale } from "@s4tk/models/enums";
 type ManifestFileType = "properties" | "json";
 
 /**
+ * TODO:
+ */
+interface PackagePaths {
+  source: string[];
+  delta: string[];
+}
+
+/**
  * Optional arguments for indexing tuning.
  */
 interface IndexingOptions extends

@@ -2,6 +2,7 @@ import path from "path";
 import glob from "glob";
 import { StringTableLocale } from "@s4tk/models/enums";
 import { getLocaleCode } from "./helpers";
+import { PackagePaths } from "./types";
 
 //#region Constants
 
@@ -15,15 +16,6 @@ const sourceDirectories = [
 ];
 
 //#endregion Constants
-
-//#region Types
-
-interface PackagePaths {
-  source: string[];
-  delta: string[];
-}
-
-//#endregion Types
 
 /**
  * Finds paths to all packages containing string tables.
