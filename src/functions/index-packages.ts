@@ -1,6 +1,6 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
-import type { ResourceKey, ResourcePosition } from "@s4tk/models/types";
+import type { ResourcePosition } from "@s4tk/models/types";
 import type { PackagePaths } from "../types";
 
 interface PathAndPosition {
@@ -16,9 +16,10 @@ interface SimulationIndex {
 }
 
 /**
- * TODO:
+ * Indexes all of the Combined Tuning and SimData in the packages at the given
+ * file paths.
  * 
- * @param filepaths TODO:
+ * @param filepaths Paths to packages to index
  */
 export function indexSimulationFiles(filepaths: PackagePaths): SimulationIndex {
   const latestCombineds = new Map<number, PathAndPosition>();
