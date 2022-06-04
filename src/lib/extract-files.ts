@@ -20,7 +20,7 @@ import { ExtractionOptions, setDefaultOptions } from "./options";
 export function extractFiles(
   srcDirs: string[],
   outDir: string,
-  options?: ExtractionOptions
+  options?: Partial<ExtractionOptions>
 ) {
   options = setDefaultOptions(options);
 
@@ -33,7 +33,7 @@ export function extractFiles(
   // creating simulation index
   if (options.extractTuning || options.extractSimData) {
     var simPaths = locateSimulationPackages(srcDirs);
-    var simIndex = indexSimulationPackages(simPaths);
+    var simIndex = indexSimulationPackages(simPaths, options as ExtractionOptions);
   }
 
   // building comment map
@@ -50,7 +50,7 @@ export function extractFiles(
       const cbt = Package.fetchResources<CombinedTuningResource>(filepath, positions);
       cbt.forEach(entry => {
         entry.value.toTuning({ commentMap }).forEach(tuning => {
-          writeTuningFile(outDir, entry.key.group, tuning, options);
+          writeTuningFile(outDir, entry.key.group, tuning, options as ExtractionOptions);
         });
       });
     });
@@ -61,7 +61,7 @@ export function extractFiles(
     simIndex.simdata.forEach((positions, filepath) => {
       const simdatas = Package.fetchResources<SimDataResource>(filepath, positions);
       simdatas.forEach(entry => {
-        writeSimDataFile(outDir, entry, options);
+        writeSimDataFile(outDir, entry, options as ExtractionOptions);
       });
     });
   }

@@ -1,6 +1,7 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
 import type { ResourcePosition } from "@s4tk/models/types";
+import { ExtractionOptions } from "./options";
 import type { FileMap, PackagePaths, SimulationIndex } from "./types";
 
 /**
@@ -8,16 +9,23 @@ import type { FileMap, PackagePaths, SimulationIndex } from "./types";
  * file paths.
  * 
  * @param filepaths Absolute paths of packages to index
+ * @param options User options
  */
-export function indexSimulationPackages(filepaths: PackagePaths): SimulationIndex {
+export function indexSimulationPackages(
+  filepaths: PackagePaths,
+  options: ExtractionOptions
+): SimulationIndex {
   const latestCombineds = new Map<number, PathAndPosition>();
   const latestSimDatas = new Map<bigint, PathAndPosition>();
 
   const indexPackage = (filepath: string) => {
     const resources = Package.indexResources(filepath, {
-      resourceFilter(type, group, instance) {
-        return (type === BinaryResourceType.CombinedTuning
-          || type === BinaryResourceType.SimData);
+      resourceFilter(type) {
+        if (options.extractTuning && type === BinaryResourceType.CombinedTuning)
+          return true;
+        if (options.extractSimData && type === BinaryResourceType.SimData)
+          return true;
+        return false;
       }
     });
 
