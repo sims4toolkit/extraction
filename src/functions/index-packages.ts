@@ -14,26 +14,18 @@ export function indexSimulationPackages(filepaths: PackagePaths): SimulationInde
   const latestSimDatas = new Map<bigint, PathAndPosition>();
 
   const indexPackage = (filepath: string) => {
-    const keys: (number | bigint)[] = [];
-
-    Package.indexResources(filepath, {
+    const resources = Package.indexResources(filepath, {
       resourceFilter(type, group, instance) {
-        if (type === BinaryResourceType.CombinedTuning) {
-          keys.push(group);
-          return true;
-        } else if (type === BinaryResourceType.SimData) {
-          keys.push(instance);
-          return true;
-        } else {
-          return false;
-        }
+        return (type === BinaryResourceType.CombinedTuning
+          || type === BinaryResourceType.SimData);
       }
-    }).forEach((position, i) => {
-      const key = keys[i];
-      if (typeof key === "number") {
-        latestCombineds.set(key, { filepath, position });
+    });
+
+    resources.forEach(position => {
+      if (position.key.type === BinaryResourceType.CombinedTuning) {
+        latestCombineds.set(position.key.group, { filepath, position });
       } else {
-        latestSimDatas.set(key, { filepath, position });
+        latestSimDatas.set(position.key.instance, { filepath, position });
       }
     });
   };
@@ -56,20 +48,12 @@ export function indexStringTablePackages(filepaths: PackagePaths): FileMap {
   const latestStbls = new Map<bigint, PathAndPosition>();
 
   const indexPackage = (filepath: string) => {
-    const keys: bigint[] = [];
-
     Package.indexResources(filepath, {
-      resourceFilter(type, _, instance) {
-        if (type === BinaryResourceType.StringTable) {
-          keys.push(instance);
-          return true;
-        } else {
-          return false;
-        }
+      resourceFilter(type) {
+        return type === BinaryResourceType.StringTable;
       }
-    }).forEach((position, i) => {
-      const key = keys[i];
-      latestStbls.set(key, { filepath, position });
+    }).forEach(position => {
+      latestStbls.set(position.key.instance, { filepath, position });
     });
   };
 

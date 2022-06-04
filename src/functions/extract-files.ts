@@ -8,15 +8,8 @@ import { locateSimulationPackages, locateStringTablePackages } from "./locate-pa
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
 
-// FIXME: temporary
-// const sourceDirectories = [
-//   "/Applications/The Sims 4 Packs",
-//   "/Applications/The Sims 4.app/Contents",
-// ];
-
 // FIXME: delete
 const TEMPORARY_USER_LOCALE = 0;
-
 
 /**
  * Extracts all tuning and SimData files from the packages in the given
