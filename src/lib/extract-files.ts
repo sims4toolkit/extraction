@@ -55,11 +55,21 @@ export function extractFiles(
     options.eventListener?.("extract-tuning-start");
     let currentCbt = 0;
     simIndex.combined.forEach((positions, filepath) => {
-      const cbt = Package.fetchResources<CombinedTuningResource>(filepath, positions);
+      const cbt = Package.fetchResources<CombinedTuningResource>(
+        filepath,
+        positions
+      );
+
       cbt.forEach(entry => {
         const tunings = entry.value.toTuning({ commentMap });
         tunings.forEach((tuning, i) => {
-          writeTuningFile(outDir, entry.key.group, tuning, options as ExtractionOptions);
+          writeTuningFile(
+            outDir,
+            entry.key.group,
+            tuning,
+            options as ExtractionOptions
+          );
+
           options.eventListener?.(
             "tuning-written",
             currentCbt,
@@ -78,7 +88,11 @@ export function extractFiles(
   if (options.extractSimData) {
     let currentDbpf = 0;
     simIndex.simdata.forEach((positions, filepath) => {
-      const simdatas = Package.fetchResources<SimDataResource>(filepath, positions);
+      const simdatas = Package.fetchResources<SimDataResource>(
+        filepath,
+        positions
+      );
+
       simdatas.forEach((entry, i) => {
         writeSimDataFile(outDir, entry, options as ExtractionOptions);
         options.eventListener?.(
