@@ -48,7 +48,7 @@
         {
           "displayType": "property",
           "name": "namingConvention",
-          "description": "Naming convention to use.",
+          "description": "Naming convention to use. \"s4s\" by default.",
           "type": {
             "name": "NamingConvention",
             "path": {

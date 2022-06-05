@@ -7,9 +7,9 @@
   "header": {
     "title": {
       "prefix": "function",
-      "name": "extraction"
+      "name": "extractFiles"
     },
-    "description": "Indexes and extracts SimData and combined tuning.",
+    "description": "Indexes and extracts SimData and tuning.",
     "sourceCode": "src/lib/extract-files.ts"
   },
   "sections": [
