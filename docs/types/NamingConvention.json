@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "header": {
+    "title": {
+      "prefix": "type",
+      "name": "NamingConvention"
+    },
+    "description": "Convention to use when naming extracted files.",
+    "sourceCode": "src/lib/types.ts"
+  },
+  "sections": [
+    {
+      "title": "Values",
+      "content": [
+        {
+          "displayType": "general",
+          "paragraphs": [
+            "\"s4s\"",
+            "\"tgi\"",
+            "\"tgi-name\"",
+            "\"name-only\""
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Previews",
+      "description": "These are what the resulting filenames will look like. T = type, G = group, I = instance, and the name comes from either tuning or SimData.",
+      "content": [
+        {
+          "displayType": "enum",
+          "values": [
+            {
+              "name": "s4s",
+              "value": "TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.name.xml"
+            },
+            {
+              "name": "tgi",
+              "value": "S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml"
+            },
+            {
+              "name": "tgi-name",
+              "value": "S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.name.xml"
+            },
+            {
+              "name": "name-only",
+              "value": "name.xml"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
