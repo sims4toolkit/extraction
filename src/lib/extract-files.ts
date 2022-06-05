@@ -2,12 +2,13 @@ import fs from "fs";
 import path from "path";
 import { CombinedTuningResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
 import { SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
-import { formatResourceKey, formatResourceTGI } from "@s4tk/hashing/formatting";
+import { formatResourceKey } from "@s4tk/hashing/formatting";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
-import { ExtractionOptions, ManifestType, setDefaultOptions } from "./options";
+import { ExtractionOptions, setDefaultOptions } from "./options";
+import { ManifestType } from "./types";
 
 /**
  * Extracts all tuning and SimData files from the packages in the given
