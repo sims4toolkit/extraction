@@ -197,11 +197,11 @@ function getFileName(
 ): string {
   switch (options.namingConvention) {
     case "s4s":
-      return formatResourceKey(key, "!") + filename + ".xml";
+      return formatResourceKey(key, "!") + "." + filename + ".xml";
     case "tgi":
       return "S4_" + formatResourceKey(key, "_") + ".xml";
     case "tgi-name":
-      return "S4_" + formatResourceKey(key, "_") + filename + ".xml";
+      return "S4_" + formatResourceKey(key, "_") + "." + filename + ".xml";
     case "name-only":
       return filename + ".xml";
   }
