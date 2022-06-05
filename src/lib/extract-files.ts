@@ -3,7 +3,7 @@ import path from "path";
 import { CombinedTuningResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
 import { SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
 import { formatResourceKey, formatResourceTGI } from "@s4tk/hashing/formatting";
-import type { ResourceKeyPair } from "@s4tk/models/types";
+import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
@@ -148,8 +148,8 @@ function writeTuningFile(
 ) {
   const type = TuningResourceType.parseAttr(tuning.root.attributes.i);
   const instance = BigInt(tuning.root.id);
-  const key = formatResourceTGI(type, group, instance, "!");
-  const filename = `${key}.${tuning.root.name}.xml`;
+  const key = { type, group, instance };
+  const filename = getFileName(key, tuning.root.name, options);
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
     subfolders = path.join(subfolders, TuningResourceType[type] ?? "Unknown");
@@ -172,8 +172,7 @@ function writeSimDataFile(
   simdata: ResourceKeyPair<SimDataResource>,
   options: ExtractionOptions
 ) {
-  const key = formatResourceKey(simdata.key, "!");
-  const filename = `${key}.${simdata.value.instance.name}.xml`;
+  const filename = getFileName(simdata.key, simdata.value.instance.name, options);
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
     subfolders = path.join(subfolders, "SimData");
@@ -182,6 +181,30 @@ function writeSimDataFile(
   if (!fs.existsSync(subfolders)) fs.mkdirSync(subfolders, { recursive: true });
   const filepath = path.join(subfolders, filename);
   fs.writeFileSync(filepath, simdata.value.toXmlDocument().toXml());
+}
+
+/**
+ * Gets the filename for a resource.
+ * 
+ * @param key Key of resource to get filename for
+ * @param filename Name of resource
+ * @param options Use options
+ */
+function getFileName(
+  key: ResourceKey,
+  filename: string,
+  options: ExtractionOptions
+): string {
+  switch (options.namingConvention) {
+    case "s4s":
+      return formatResourceKey(key, "!") + filename + ".xml";
+    case "tgi":
+      return "S4_" + formatResourceKey(key, "_") + ".xml";
+    case "tgi-name":
+      return "S4_" + formatResourceKey(key, "_") + filename + ".xml";
+    case "name-only":
+      return filename + ".xml";
+  }
 }
 
 /**
