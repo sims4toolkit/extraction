@@ -16,9 +16,7 @@
     "clean:out": "rm -rf ./out/**",
     "dev": "npm run clean ; tsc --watch",
     "build": "npm run clean ; tsc ; node scripts/prepublish.cjs",
-    "publish": "npm run build && sh scripts/publish.sh",
-    "test": "mocha -r ts-node/register \"test/**/*.test.ts\"",
-    "test:coverage": "nyc mocha -r ts-node/register \"test/**/*.test.ts\""
+    "publish": "npm run build && sh scripts/publish.sh"
   },
   "author": "frankkulak",
   "funding": {
@@ -37,7 +35,7 @@
   },
   "dependencies": {
     "@s4tk/hashing": "^0.2.1",
-    "@s4tk/models": "^0.4.2",
+    "@s4tk/models": "^0.4.3",
     "glob": "^7.2.0"
   }
 }
