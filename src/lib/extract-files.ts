@@ -130,6 +130,8 @@ export function extractFiles(
   }
 }
 
+//#region Helpers
+
 /**
  * Writes a tuning file to disc.
  * 
@@ -170,7 +172,7 @@ function writeSimDataFile(
   simdata: ResourceKeyPair<SimDataResource>,
   options: ExtractionOptions
 ) {
-  const key = formatResourceKey(simdata.key);
+  const key = formatResourceKey(simdata.key, "!");
   const filename = `${key}.${simdata.value.instance.name}.xml`;
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
@@ -248,3 +250,5 @@ function writeManifest(
   const filepath = path.join(outDir, `${filename}.${extension}`);
   fs.writeFileSync(filepath, content);
 }
+
+//#endregion Helpers

@@ -3,6 +3,8 @@ import { ExtractionEvent } from "./types";
 
 export type ManifestType = "properties" | "json";
 
+export type NamingConvention = "s4s" | "tgi" | "tgi-name" | "name-only";
+
 /**
  * Optional arguments for extracting tuning.
  */
@@ -24,6 +26,17 @@ export interface ExtractionOptions {
    * default.
    */
   extractTuning: boolean;
+
+  /**
+   * Naming convention to use. Default is "s4s".
+   * 
+   * Options
+   * - `s4s` -> `TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.filename.xml`
+   * - `tgi` -> `S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml`
+   * - `tgi-name` -> `S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`
+   * - `name-only` -> `filename.xml`
+   */
+  namingConvention: NamingConvention;
 
   /**
    * Whether or not comments should be added for string keys and tuning IDs.
@@ -79,6 +92,7 @@ export function setDefaultOptions(
     eventListener: options?.eventListener,
     extractSimData: options?.extractSimData ?? true,
     extractTuning: options?.extractTuning ?? true,
+    namingConvention: options?.namingConvention ?? "s4s",
     restoreComments: options?.restoreComments ?? true,
     stringManifest: options?.stringManifest,
     targetLocale: options?.targetLocale ?? StringTableLocale.English,
