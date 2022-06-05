@@ -26,7 +26,8 @@ export function indexSimulationPackages(
         if (options.extractSimData && type === BinaryResourceType.SimData)
           return true;
         return false;
-      }
+      },
+      limit: options.extractSimData ? undefined : 1
     });
 
     resources.forEach(position => {
