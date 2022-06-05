@@ -48,7 +48,7 @@
         {
           "displayType": "property",
           "name": "namingConvention",
-          "description": "Naming convention to use. Default is \"s4s\".\n\nOptions\n- \"s4s\" -> \"TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.filename.xml\"\n- \"tgi\" -> \"S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml\"\n- \"tgi-name\" -> \"S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml\"\n- \"name-only\" -> \"filename.xml\"",
+          "description": "Naming convention to use.",
           "type": {
             "name": "NamingConvention",
             "path": {
