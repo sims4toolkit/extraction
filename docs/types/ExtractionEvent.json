@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "header": {
+    "title": {
+      "prefix": "type",
+      "name": "ExtractionEvent"
+    },
+    "description": "An event that occurs during extraction. For use with logging/UI.",
+    "sourceCode": "src/lib/types.ts"
+  },
+  "sections": [
+    {
+      "title": "Values",
+      "content": [
+        {
+          "displayType": "general",
+          "paragraphs": [
+            "\"index-stbl-start\"",
+            "\"index-stbl-end\"",
+            "\"index-sim-start\"",
+            "\"index-sim-end\"",
+            "\"mapping-start\"",
+            "\"mapping-end\"",
+            "\"extract-tuning-start\"",
+            "\"tuning-written\"",
+            "\"extract-tuning-end\"",
+            "\"extract-simdata-start\"",
+            "\"simdata-written\"",
+            "\"extract-simdata-end\""
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Notes",
+      "content": [
+        {
+          "displayType": "general",
+          "paragraphs": [
+            "\"tuning-written\" and \"simdata-written\" are emitted every time a tuning or SimData file has been written to disc. They each pass four arguments to the event listener. In order, these arguments are [the current index of the package being read, the total number of packages to read, the current index of the resource that was just written, and the total number of resources to write from this package].",
+            "Extraction events are mostly useless for regular use cases, but are included for ease of showing progress either in a command line or on a UI.",
+            "Adding an event callback will likely cause your extraction to be slower than normal."
+          ]
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "seeAlso": [
+      {
+        "name": "ExtractionEventListener",
+        "path": {
+          "pkg": "extraction",
+          "group": "types",
+          "item": "ExtractionEventListener"
+        }
+      }
+    ]
+  }
+}
