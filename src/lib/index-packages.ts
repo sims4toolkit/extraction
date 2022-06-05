@@ -21,7 +21,7 @@ export function indexSimulationPackages(
   const indexPackage = (filepath: string) => {
     const resources = Package.indexResources(filepath, {
       resourceFilter(type) {
-        if (options.extractTuning && type === BinaryResourceType.CombinedTuning)
+        if ((options.extractTuning || options.tuningManifest) && type === BinaryResourceType.CombinedTuning)
           return true;
         if (options.extractSimData && type === BinaryResourceType.SimData)
           return true;
