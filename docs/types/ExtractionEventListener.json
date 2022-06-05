@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "header": {
+    "title": {
+      "prefix": "type",
+      "name": "ExtractionEventListener"
+    },
+    "description": "A function that listens for extraction events. These should always be asynchronous.",
+    "sourceCode": "src/lib/types.ts"
+  },
+  "sections": [
+    {
+      "title": "Values",
+      "content": [
+        {
+          "displayType": "general",
+          "paragraphs": [
+            "(event: ExtractionEvent, ...args: any[]) => void"
+          ]
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "seeAlso": [
+      {
+        "name": "ExtractionEvent",
+        "path": {
+          "pkg": "extraction",
+          "group": "types",
+          "item": "ExtractionEvent"
+        }
+      }
+    ]
+  }
+}
