@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "imports": [
+    "import { extractFiles } from \"@s4tk/extraction\"; // ESM",
+    "const { extractFiles } = require(\"@s4tk/extraction\"); // CJS"
+  ],
+  "header": {
+    "title": {
+      "prefix": "function",
+      "name": "extraction"
+    },
+    "description": "Indexes and extracts SimData and combined tuning.",
+    "sourceCode": "src/lib/extract-files.ts"
+  },
+  "sections": [
+    {
+      "content": [
+        {
+          "displayType": "function",
+          "name": "extractFiles",
+          "description": "Extracts all tuning and SimData files from the packages in the given directories, restoring string and tuning comments along the way. String and tuning manifests may be generated as well.",
+          "arguments": [
+            {
+              "name": "srcDirs",
+              "description": "Array of directories that contain packages to extract from.",
+              "type": {
+                "name": "string[]"
+              }
+            },
+            {
+              "name": "outDir",
+              "description": "Directory to output all extracted files to.",
+              "type": {
+                "name": "string"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "description": "Options to configure.",
+              "type": {
+                "name": "Partial<ExtractionOptions>",
+                "path": {
+                  "pkg": "extraction",
+                  "group": "types",
+                  "item": "ExtractionOptions"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

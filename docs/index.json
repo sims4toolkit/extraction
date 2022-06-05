@@ -5,9 +5,18 @@
   ],
   "groups": [
     {
-      "name": "example",
+      "name": "functions",
       "items": [
-        "Example"
+        "extractFiles"
+      ]
+    },
+    {
+      "name": "types",
+      "items": [
+        "ExtractionEvent",
+        "ExtractionOptions",
+        "ManifestType",
+        "NamingConvention"
       ]
     }
   ]
