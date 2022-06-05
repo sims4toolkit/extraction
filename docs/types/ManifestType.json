@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "header": {
+    "title": {
+      "prefix": "type",
+      "name": "ManifestType"
+    },
+    "description": "Types of supported manifest files.",
+    "sourceCode": "src/lib/types.ts"
+  },
+  "sections": [
+    {
+      "title": "Values",
+      "content": [
+        {
+          "displayType": "general",
+          "paragraphs": [
+            "\"json\"",
+            "\"properties\""
+          ]
+        }
+      ]
+    }
+  ]
+}
