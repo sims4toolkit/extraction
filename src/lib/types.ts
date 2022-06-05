@@ -1,6 +1,16 @@
 import type { ResourcePosition } from "@s4tk/models/types";
 
 /**
+ * The format of a generated manifest file.
+ */
+export type ManifestType = "properties" | "json";
+
+/**
+ * How extracted files are named.
+ */
+export type NamingConvention = "s4s" | "tgi" | "tgi-name" | "name-only";
+
+/**
  * An event that occurs during extraction. For use with logging/UI.
  */
 export type ExtractionEvent =
@@ -16,6 +26,12 @@ export type ExtractionEvent =
   "extract-simdata-start" |
   "simdata-written" | // [complete DBPF, total DBPF, current SD, total SD]
   "extract-simdata-end";
+
+/**
+ * A function that listens for extraction events.
+ */
+export type ExtractionEventListener
+  = (event: ExtractionEvent, ...args: any[]) => void;
 
 /**
  * Maps file names to positions of resources within them.

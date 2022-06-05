@@ -1,9 +1,5 @@
 import { StringTableLocale } from "@s4tk/models/enums";
-import { ExtractionEvent } from "./types";
-
-export type ManifestType = "properties" | "json";
-
-export type NamingConvention = "s4s" | "tgi" | "tgi-name" | "name-only";
+import { ExtractionEventListener, ManifestType, NamingConvention } from "./types";
 
 /**
  * Optional arguments for extracting tuning.
@@ -14,7 +10,7 @@ export interface ExtractionOptions {
    * number of additional arguments may be passed as well. It is highly
    * recommended that you make this function async.
    */
-  eventListener?: (event: ExtractionEvent, ...args: any[]) => void;
+  eventListener?: ExtractionEventListener;
 
   /**
    * Whether or not SimData should be extracted. True by default.

@@ -21,7 +21,12 @@
           "description": "A listener that is called every time an event is emitted. An arbitrary number of additional arguments may be passed as well. It is highly recommended that you make this function async.",
           "optional": true,
           "type": {
-            "name": "(event: ExtractionEvent, ...args: any[]) => void"
+            "name": "ExtractionEventListener",
+            "path": {
+              "pkg": "extraction",
+              "group": "types",
+              "item": "ExtractionEventListener"
+            }
           }
         },
         {
@@ -120,17 +125,5 @@
         }
       ]
     }
-  ],
-  "footer": {
-    "seeAlso": [
-      {
-        "name": "ExtractionEvent",
-        "path": {
-          "pkg": "extraction",
-          "group": "types",
-          "item": "ExtractionEvent"
-        }
-      }
-    ]
-  }
+  ]
 }
