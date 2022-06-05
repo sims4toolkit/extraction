@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "imports": [
+    "import { loadTuningMap } from \"@s4tk/extraction\"; // ESM",
+    "const { loadTuningMap } = require(\"@s4tk/extraction\"); // CJS"
+  ],
+  "header": {
+    "title": {
+      "prefix": "function",
+      "name": "loadTuningMap"
+    },
+    "description": "Indexes and returns all tunings in the game.",
+    "sourceCode": "src/lib/memory-loaders.ts"
+  },
+  "sections": [
+    {
+      "content": [
+        {
+          "displayType": "function",
+          "name": "loadStringMap",
+          "description": "Finds all of the most recent tunings, and returns them in a map of their IDs to names.",
+          "arguments": [
+            {
+              "name": "srcDirs",
+              "description": "Array of directories to search for tunings.",
+              "type": {
+                "name": "string[]"
+              }
+            }
+          ],
+          "returnType": {
+            "name": "Map<string, string>"
+          }
+        }
+      ]
+    }
+  ]
+}

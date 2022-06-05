@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sims4toolkit/misc/main/json-schemas/docs-item-schema.json",
+  "imports": [
+    "import { loadStringMap } from \"@s4tk/extraction\"; // ESM",
+    "const { loadStringMap } = require(\"@s4tk/extraction\"); // CJS"
+  ],
+  "header": {
+    "title": {
+      "prefix": "function",
+      "name": "loadStringMap"
+    },
+    "description": "Indexes and returns all strings in the game.",
+    "sourceCode": "src/lib/memory-loaders.ts"
+  },
+  "sections": [
+    {
+      "content": [
+        {
+          "displayType": "function",
+          "name": "loadStringMap",
+          "description": "Finds all of the most recent strings for a given locale, and returns them in a map of their keys to values. Searches for English by default.",
+          "arguments": [
+            {
+              "name": "srcDirs",
+              "description": "Array of directories to search for strings.",
+              "type": {
+                "name": "string[]"
+              }
+            },
+            {
+              "name": "locale",
+              "optional": true,
+              "description": " Locale of strings to extract.",
+              "type": {
+                "name": "string"
+              }
+            }
+          ],
+          "returnType": {
+            "name": "Map<string, string>"
+          }
+        }
+      ]
+    }
+  ]
+}

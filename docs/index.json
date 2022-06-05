@@ -7,7 +7,9 @@
     {
       "name": "functions",
       "items": [
-        "extractFiles"
+        "extractFiles",
+        "loadStringMap",
+        "loadTuningMap"
       ]
     },
     {
