@@ -1,6 +1,8 @@
 import { StringTableLocale } from "@s4tk/models/enums";
 import { ExtractionEvent } from "./types";
 
+export type ManifestType = "properties" | "json";
+
 /**
  * Optional arguments for extracting tuning.
  */
@@ -30,10 +32,24 @@ export interface ExtractionOptions {
   restoreComments: boolean;
 
   /**
+   * The kind of manifest to generate for strings. The manifest will map string
+   * keys (hex strings) to their values. If not provided, no manifest is
+   * generated. 
+   */
+  stringManifest?: ManifestType;
+
+  /**
    * If restoring comments, this determines which language is used to restore
    * string comments. English by default.
    */
   targetLocale: StringTableLocale;
+
+  /**
+   * The kind of manifest to generate for tunings. The manifest will map tuning
+   * IDs (decimal strings) to their file names. If not provided, no manifest is
+   * generated. 
+   */
+  tuningManifest?: ManifestType;
 
   /**
    * Whether or not to use primary subfolders when writing the files. This 
@@ -64,7 +80,9 @@ export function setDefaultOptions(
     extractSimData: options?.extractSimData ?? true,
     extractTuning: options?.extractTuning ?? true,
     restoreComments: options?.restoreComments ?? true,
+    stringManifest: options?.stringManifest,
     targetLocale: options?.targetLocale ?? StringTableLocale.English,
+    tuningManifest: options?.tuningManifest,
     usePrimarySubfolders: options?.usePrimarySubfolders ?? true,
     useSecondarySubfolders: options?.useSecondarySubfolders ?? true,
   };

@@ -8,8 +8,8 @@ export type ExtractionEvent =
   "index-stbl-end" |
   "index-sim-start" |
   "index-sim-end" |
-  "comments-start" |
-  "comments-end" |
+  "mapping-start" |
+  "mapping-end" |
   "extract-tuning-start" |
   "tuning-written" | // [complete CBT, total CBT, current TUN, total TUN]
   "extract-tuning-end" |

@@ -7,7 +7,7 @@ import type { ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
-import { ExtractionOptions, setDefaultOptions } from "./options";
+import { ExtractionOptions, ManifestType, setDefaultOptions } from "./options";
 
 /**
  * Extracts all tuning and SimData files from the packages in the given
@@ -25,7 +25,7 @@ export function extractFiles(
   options = setDefaultOptions(options);
 
   // creating stbl index
-  if (options.restoreComments) {
+  if (options.restoreComments || options.stringManifest) {
     options.eventListener?.("index-stbl-start");
     const stblPaths = locateStringTablePackages(options.targetLocale, srcDirs);
     var stblIndex = indexStringTablePackages(stblPaths);
@@ -33,22 +33,44 @@ export function extractFiles(
   }
 
   // creating simulation index
-  if (options.extractTuning || options.extractSimData) {
+  if (options.extractTuning || options.extractSimData || options.tuningManifest) {
     options.eventListener?.("index-sim-start");
     var simPaths = locateSimulationPackages(srcDirs);
     var simIndex = indexSimulationPackages(simPaths, options as ExtractionOptions);
     options.eventListener?.("index-sim-end");
   }
 
-  // building comment map
+  // building maps & manifests
   let commentMap: Map<string, string>;
-  if (options.restoreComments) {
-    options.eventListener?.("comments-start");
-    commentMap = new Map();
-    buildStringTableMap(stblIndex, commentMap);
-    buildSimulationMap(simIndex, commentMap);
-    options.eventListener?.("comments-end");
+  let startedMapping = false;
+  const startMapping = () => {
+    if (!startedMapping) {
+      options.eventListener?.("mapping-start");
+      startedMapping = true;
+    }
+  };
+
+  if (options.restoreComments || options.stringManifest) {
+    startMapping();
+    const stringMap = buildStringTableMap(stblIndex);
+    if (options.stringManifest)
+      writeStringManifest(outDir, stringMap, options as ExtractionOptions);
+    if (options.restoreComments)
+      commentMap = stringMap;
   }
+
+  if (options.tuningManifest) {
+    startMapping();
+    const tuningMap = buildSimulationMap(simIndex);
+    writeTuningManifest(outDir, tuningMap, options as ExtractionOptions);
+    if (options.restoreComments)
+      tuningMap.forEach((name, id) => commentMap.set(id, name));
+  } else if (options.restoreComments) {
+    startMapping();
+    buildSimulationMap(simIndex, commentMap);
+  }
+
+  if (startedMapping) options.eventListener?.("mapping-end");
 
   // extracting tuning
   if (options.extractTuning) {
@@ -158,4 +180,71 @@ function writeSimDataFile(
   if (!fs.existsSync(subfolders)) fs.mkdirSync(subfolders, { recursive: true });
   const filepath = path.join(subfolders, filename);
   fs.writeFileSync(filepath, simdata.value.toXmlDocument().toXml());
+}
+
+/**
+ * Writes a string manifest file.
+ * 
+ * @param outDir Directory to output this file to 
+ * @param map Map of string keys to values
+ * @param options User options
+ */
+function writeStringManifest(
+  outDir: string,
+  map: Map<string, string>,
+  options: ExtractionOptions
+) {
+  writeManifest(outDir, map, "StringManifest", options.stringManifest);
+}
+
+/**
+ * Writes a tuning manifest file.
+ * 
+ * @param outDir Directory to output this file to 
+ * @param map Map of tuning IDs to names
+ * @param options User options
+ */
+function writeTuningManifest(
+  outDir: string,
+  map: Map<string, string>,
+  options: ExtractionOptions
+) {
+  writeManifest(outDir, map, "TuningManifest", options.tuningManifest);
+}
+
+/**
+ * Writes a manifest file.
+ * 
+ * @param outDir Directory to output this file to 
+ * @param map Map of tuning IDs to names
+ * @param filename Name of manifest file
+ * @param extension Manifest type
+ */
+function writeManifest(
+  outDir: string,
+  map: Map<string, string>,
+  filename: string,
+  extension: ManifestType
+) {
+  if (extension === "properties") {
+    const lines: string[] = [];
+
+    map.forEach((value, key) => {
+      lines.push(key + "=" + value);
+    });
+
+    var content = lines.join("\n");
+  } else {
+    const items: { key: string; value: string }[] = [];
+
+    map.forEach((value, key) => {
+      items.push({ key, value });
+    });
+
+    var content = JSON.stringify(items, null, 2);
+  }
+
+  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+  const filepath = path.join(outDir, `${filename}.${extension}`);
+  fs.writeFileSync(filepath, content);
 }
