@@ -6,7 +6,7 @@ import { setDefaultOptions } from "./options";
 
 /**
  * Finds all of the most recent strings for a given locale, and returns them
- * in a map of their keys to values.
+ * in a map of their keys to values. Searches for English by default.
  * 
  * @param srcDirs Array of directories to search for strings
  * @param locale Locale of strings to extract
