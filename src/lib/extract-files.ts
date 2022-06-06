@@ -109,6 +109,7 @@ export function extractFiles(
 
   // extracting simdata
   if (options.extractSimData) {
+    options.eventListener?.("extract-simdata-start");
     let currentDbpf = 0;
     simIndex.simdata.forEach((positions, filepath) => {
       const simdatas = Package.fetchResources<SimDataResource>(
@@ -128,6 +129,7 @@ export function extractFiles(
       });
       currentDbpf++;
     });
+    options.eventListener?.("extract-simdata-end");
   }
 }
 
