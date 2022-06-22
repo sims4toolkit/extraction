@@ -1,6 +1,7 @@
 import { Package } from "@s4tk/models";
 import { BinaryResourceType } from "@s4tk/models/enums";
 import type { ResourcePosition } from "@s4tk/models/types";
+import { formatResourceKey } from "@s4tk/hashing/formatting";
 import { ExtractionOptions } from "./options";
 import type { FileMap, PackagePaths, SimulationIndex } from "./types";
 
@@ -70,6 +71,31 @@ export function indexStringTablePackages(filepaths: PackagePaths): FileMap {
   filepaths.delta.forEach(indexPackage);
 
   return createFileMap(latestStbls);
+}
+
+/**
+ * Indexes all of the images in the packages at the given file paths.
+ * 
+ * @param filepaths Absolute paths of packages to index
+ */
+export function indexImagePackages(filepaths: PackagePaths): FileMap {
+  const latestImages = new Map<string, PathAndPosition>();
+
+  const indexPackage = (filepath: string) => {
+    Package.indexResources(filepath, {
+      resourceFilter(type) {
+        return type === BinaryResourceType.DdsImage ||
+          type === BinaryResourceType.DstImage;
+      }
+    }).forEach(position => {
+      latestImages.set(formatResourceKey(position.key), { filepath, position });
+    });
+  };
+
+  filepaths.source.forEach(indexPackage);
+  filepaths.delta.forEach(indexPackage);
+
+  return createFileMap(latestImages);
 }
 
 //#region Types

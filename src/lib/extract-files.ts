@@ -1,14 +1,15 @@
 import fs from "fs";
 import path from "path";
-import { CombinedTuningResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
+import { CombinedTuningResource, DdsImageResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
 import { SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
 import { formatResourceKey } from "@s4tk/hashing/formatting";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
-import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
-import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
+import { locateImagePackages, locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
+import { indexImagePackages, indexSimulationPackages, indexStringTablePackages } from "./index-packages";
 import { buildSimulationMap, buildStringTableMap } from "./build-maps";
 import { ExtractionOptions, setDefaultOptions } from "./options";
 import { ManifestType } from "./types";
+import { FourCC } from "@s4tk/images/lib/enums";
 
 /**
  * Extracts all tuning and SimData files from the packages in the given
@@ -131,6 +132,73 @@ export function extractFiles(
     });
     options.eventListener?.("extract-simdata-end");
   }
+}
+
+/**
+ * TODO:
+ * 
+ * @param srcDirs Array of directories that contain packages to extract from
+ * @param outDir Directory to output all extracted files to
+ */
+export function extractImages(
+  srcDirs: string[],
+  outDir: string
+) {
+  const start = performance.now(); // FIXME: delete
+
+  const imagePaths = locateImagePackages(srcDirs);
+  const imagePathsFound = performance.now(); // FIXME: delete
+  console.log("Image paths found:", imagePathsFound - start); // FIXME: delete
+
+  const imageIndex = indexImagePackages(imagePaths);
+  const imageIndexFound = performance.now(); // FIXME: delete
+  // console.log(imageIndex.keys()); // FIXME: delete
+  console.log("Image index found:", imageIndexFound - imagePathsFound); // FIXME: delete
+
+  const fourCcMap = new Map<number | string, number>(); // FIXME: delete
+
+  const fourCcSet = new Set<string>([
+    "DST1",
+    "DST5",
+    // "None",
+    "DXT5",
+    "DXT3",
+    "DXT1"
+  ]);
+
+  imageIndex.forEach((positions, filepath) => {
+    Package.fetchResources<DdsImageResource>(
+      filepath,
+      positions
+    ).forEach(entry => {
+      // TODO: write files
+      // const outPath = path.join(outDir, formatResourceKey(entry.key, "!") + ".dds");
+      // fs.writeFileSync(outPath, entry.value.image.toUnshuffled().buffer);
+
+      // FIXME: delete
+      if (fourCcSet.size === 0) throw new Error("Found all");
+      try {
+        const fourCC = entry.value.image.header.pixelFormat.fourCC;
+        const fourCCid: string = FourCC[fourCC] ?? fourCC as unknown as string;
+        if (fourCcSet.has(fourCCid)) {
+          // const outPath = path.join(outDir, formatResourceKey(entry.key, "!") + "." + fourCCid + ".dds");
+          // fs.writeFileSync(outPath, entry.value.image.toUnshuffled().buffer);
+          const outPath = path.join(outDir, formatResourceKey(entry.key, "!") + "." + fourCCid + ".png");
+          entry.value.image.toJimp().getBuffer("image/png", (_, buffer) => {
+            fs.writeFileSync(outPath, buffer);
+          });
+          fourCcSet.delete(fourCCid);
+        }
+        // fourCcMap.set(fourCCid, (fourCcMap.get(fourCCid) ?? 0) + 1)
+      } catch (err) {
+        // fourCcMap.set("error", (fourCcMap.get("error") ?? 0) + 1)
+        throw err;
+      }
+    });
+  });
+
+  console.log(fourCcMap);// FIXME: delete
+  console.log("Finished:", performance.now() - start); // FIXME: delete
 }
 
 //#region Helpers

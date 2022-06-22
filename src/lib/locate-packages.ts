@@ -6,7 +6,7 @@ import { PackagePaths } from "./types";
 /**
  * Finds paths to all packages containing simulation files.
  * 
- * @param dirs Array of diractories to search in
+ * @param dirs Array of directories to search in
  */
 export function locateSimulationPackages(dirs: string[]): PackagePaths {
   const source: string[] = []
@@ -33,7 +33,7 @@ export function locateSimulationPackages(dirs: string[]): PackagePaths {
  * Finds paths to all packages containing string tables.
  * 
  * @param locale Locale of string tables to find
- * @param dirs Array of diractories to search in
+ * @param dirs Array of directories to search in
  */
 export function locateStringTablePackages(
   locale: StringTableLocale,
@@ -50,6 +50,34 @@ export function locateStringTablePackages(
       path.join(dir, "**", packagePattern)
     ).forEach(packagePath => {
       (packagePath.includes("Delta") ? delta : source).push(packagePath);
+    });
+  });
+
+  return { source, delta };
+}
+
+/**
+ * Finds paths to all packages containing DDS/DST images.
+ * 
+ * @param dirs Array of directories to search in
+ */
+export function locateImagePackages(dirs: string[]): PackagePaths {
+  const source: string[] = []
+  const delta: string[] = [];
+
+  // FIXME: magalogs?
+
+  dirs.forEach(dir => {
+    glob.sync(
+      path.join(dir, "**", "ClientFullBuild*.package")
+    ).forEach(fullBuildPath => {
+      source.push(fullBuildPath);
+    });
+
+    glob.sync(
+      path.join(dir, "**", "ClientDeltaBuild*.package")
+    ).forEach(deltaBuildPath => {
+      delta.push(deltaBuildPath);
     });
   });
 
