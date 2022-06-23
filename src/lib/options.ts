@@ -24,6 +24,18 @@ export interface ExtractionOptions {
   extractTuning: boolean;
 
   /**
+   * Whether or not to include delta packages. True by default. Either this or
+   * `includeFullBuilds` needs to be true in order to extract anything.
+   */
+  includeDeltas: boolean;
+
+  /**
+   * Whether or not to include full packages. True by default. Either this or
+   * `includeDeltas` needs to be true in order to extract anything.
+   */
+  includeFullBuilds: boolean;
+
+  /**
    * Naming convention to use. Default is "s4s".
    * 
    * Options
@@ -88,6 +100,8 @@ export function setDefaultOptions(
     eventListener: options?.eventListener,
     extractSimData: options?.extractSimData ?? true,
     extractTuning: options?.extractTuning ?? true,
+    includeDeltas: options?.includeDeltas ?? true,
+    includeFullBuilds: options?.includeFullBuilds ?? true,
     namingConvention: options?.namingConvention ?? "s4s",
     restoreComments: options?.restoreComments ?? true,
     stringManifest: options?.stringManifest,

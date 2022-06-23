@@ -20,6 +20,8 @@ export function indexSimulationPackages(
 
   const indexPackage = (filepath: string) => {
     const resources = Package.indexResources(filepath, {
+      limit: options.extractSimData ? undefined : 1,
+      keepDeletedRecords: true,
       resourceFilter(type) {
         if ((options.extractTuning || options.tuningManifest) && type === BinaryResourceType.CombinedTuning)
           return true;
@@ -27,14 +29,21 @@ export function indexSimulationPackages(
           return true;
         return false;
       },
-      limit: options.extractSimData ? undefined : 1
     });
 
     resources.forEach(position => {
       if (position.key.type === BinaryResourceType.CombinedTuning) {
-        latestCombineds.set(position.key.group, { filepath, position });
+        if (position.isDeleted) {
+          latestCombineds.delete(position.key.group);
+        } else {
+          latestCombineds.set(position.key.group, { filepath, position });
+        }
       } else {
-        latestSimDatas.set(position.key.instance, { filepath, position });
+        if (position.isDeleted) {
+          latestSimDatas.delete(position.key.instance);
+        } else {
+          latestSimDatas.set(position.key.instance, { filepath, position });
+        }
       }
     });
   };
@@ -58,6 +67,7 @@ export function indexStringTablePackages(filepaths: PackagePaths): FileMap {
 
   const indexPackage = (filepath: string) => {
     Package.indexResources(filepath, {
+      keepDeletedRecords: true,
       resourceFilter(type) {
         return type === BinaryResourceType.StringTable;
       }

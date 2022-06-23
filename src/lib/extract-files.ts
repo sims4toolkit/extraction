@@ -28,7 +28,7 @@ export function extractFiles(
   // creating stbl index
   if (options.restoreComments || options.stringManifest) {
     options.eventListener?.("index-stbl-start");
-    const stblPaths = locateStringTablePackages(options.targetLocale, srcDirs);
+    const stblPaths = locateStringTablePackages(options.targetLocale, srcDirs, options as ExtractionOptions);
     var stblIndex = indexStringTablePackages(stblPaths);
     options.eventListener?.("index-stbl-end");
   }
@@ -36,7 +36,7 @@ export function extractFiles(
   // creating simulation index
   if (options.extractTuning || options.extractSimData || options.tuningManifest) {
     options.eventListener?.("index-sim-start");
-    var simPaths = locateSimulationPackages(srcDirs);
+    var simPaths = locateSimulationPackages(srcDirs, options as ExtractionOptions);
     var simIndex = indexSimulationPackages(simPaths, options as ExtractionOptions);
     options.eventListener?.("index-sim-end");
   }
