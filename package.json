@@ -1,6 +1,6 @@
 {
   "name": "@s4tk/extraction",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Models and functions for indexing and extracting files from the game.",
   "repository": {
     "type": "git",
