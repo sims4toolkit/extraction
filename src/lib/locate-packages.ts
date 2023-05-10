@@ -1,8 +1,7 @@
-import path from "path";
-import glob from "glob";
 import { StringTableLocale } from "@s4tk/models/enums";
 import { PackagePaths } from "./types";
 import { ExtractionOptions } from "./options";
+import { safeGlob } from "./helpers";
 
 /**
  * Finds paths to all packages containing simulation files.
@@ -18,19 +17,25 @@ export function locateSimulationPackages(
   const delta: string[] = [];
 
   dirs.forEach(dir => {
-    if (options?.includeFullBuilds ?? true)
-      glob.sync(
-        path.join(dir, "**", "SimulationFullBuild*.package")
-      ).forEach(fullBuildPath => {
-        source.push(fullBuildPath);
-      });
+    if (options?.includeFullBuilds ?? true) {
+      safeGlob(dir, "**", "SimulationFullBuild*.package")
+        .forEach(fullBuildPath => {
+          source.push(fullBuildPath);
+        });
+    }
 
-    if (options?.includeDeltas ?? true)
-      glob.sync(
-        path.join(dir, "**", "SimulationDeltaBuild*.package")
-      ).forEach(deltaBuildPath => {
-        delta.push(deltaBuildPath);
-      });
+    if (options?.includeDeltas ?? true) {
+      safeGlob(dir, "**", "SimulationDeltaBuild*.package")
+        .forEach(deltaBuildPath => {
+          delta.push(deltaBuildPath);
+        });
+
+      // "SimulationContentDeltaBuild" is SDX
+      safeGlob(dir, "**", "SimulationContentDeltaBuild*.package")
+        .forEach(deltaBuildPath => {
+          delta.push(deltaBuildPath);
+        });
+    }
   });
 
   return { source, delta };
@@ -55,9 +60,7 @@ export function locateStringTablePackages(
   const packagePattern = `Strings_${localeCode}.package`;
 
   dirs.forEach(dir => {
-    glob.sync(
-      path.join(dir, "**", packagePattern)
-    ).forEach(packagePath => {
+    safeGlob(dir, "**", packagePattern).forEach(packagePath => {
       if (packagePath.includes("Delta")) {
         if (options?.includeDeltas ?? true) delta.push(packagePath);
       } else if (options?.includeFullBuilds ?? true) {

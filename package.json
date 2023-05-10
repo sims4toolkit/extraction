@@ -1,6 +1,6 @@
 {
   "name": "@s4tk/extraction",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Models and functions for indexing and extracting files from the game.",
   "repository": {
     "type": "git",
@@ -25,18 +25,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.3.0",
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.11.7",
-    "chai": "^4.3.4",
-    "mocha": "^9.2.0",
-    "nyc": "^15.1.0"
+    "@types/node": "^16.11.7"
   },
   "dependencies": {
     "@s4tk/hashing": "^0.2.1",
-    "@s4tk/models": "^0.6.3",
+    "@s4tk/models": "^0.6.7",
     "@s4tk/plugin-bufferfromfile": "^0.1.1",
-    "glob": "^7.2.0"
+    "glob": "^10.2.3"
   }
 }
