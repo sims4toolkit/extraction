@@ -3,7 +3,7 @@ import type { ResourcePosition } from "@s4tk/models/types";
 /**
  * The format of a generated manifest file.
  */
-export type ManifestType = "properties" | "json";
+export type ManifestType = "properties" | "json" | "xml";
 
 /**
  * How extracted files are named.

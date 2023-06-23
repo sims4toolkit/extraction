@@ -16,7 +16,8 @@
           "displayType": "general",
           "paragraphs": [
             "\"json\"",
-            "\"properties\""
+            "\"properties\"",
+            "\"xml\""
           ]
         }
       ]

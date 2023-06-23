@@ -56,8 +56,14 @@ export function extractFiles(
     const stringMap = buildStringTableMap(stblIndex);
     if (options.stringManifest)
       writeStringManifest(outDir, stringMap, options as ExtractionOptions);
-    if (options.restoreComments)
+    if (options.restoreComments) {
       commentMap = stringMap;
+      if (options.extractTuning) stringMap.forEach((value, key) => {
+        if (!key.startsWith("0x0")) return;
+        const trimmedKey = key.replace(/^0x0+/, "0x");
+        commentMap.set(trimmedKey, value);
+      });
+    }
   }
 
   if (options.tuningManifest) {
@@ -175,7 +181,7 @@ function writeSimDataFile(
   simdata: ResourceKeyPair<SimDataResource>,
   options: ExtractionOptions
 ) {
-  const filename = getFileName(simdata.key, simdata.value.instance.name, options);
+  const filename = getFileName(simdata.key, `${simdata.value.instance.name}.SimData`, options);
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
     subfolders = path.join(subfolders, "SimData");
@@ -262,7 +268,7 @@ function writeManifest(
     });
 
     var content = lines.join("\n");
-  } else {
+  } else if (extension === "json") {
     const items: { key: string; value: string }[] = [];
 
     map.forEach((value, key) => {
@@ -270,6 +276,16 @@ function writeManifest(
     });
 
     var content = JSON.stringify(items, null, 2);
+  } else if (extension === "xml") {
+    const lines: string[] = [];
+
+    map.forEach((value, key) => {
+      lines.push(`${key}<!--${value}-->`);
+    });
+
+    var content = lines.join("\n");
+  } else {
+    throw new Error(`Invalid manifest type '${extension}', must be one of: 'properties', 'json', or 'xml'`);
   }
 
   if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
