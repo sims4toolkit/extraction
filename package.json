@@ -1,6 +1,6 @@
 {
   "name": "@s4tk/extraction",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Models and functions for indexing and extracting files from the game.",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@s4tk/hashing": "^0.2.1",
-    "@s4tk/models": "^0.6.7",
+    "@s4tk/models": "^0.6.9",
     "@s4tk/plugin-bufferfromfile": "^0.1.1",
     "glob": "^10.2.3"
   }
