@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2023/07/21
 ### Added
-- Added the `insertGroupComment` option to `ExtractionOptions` for use with the S4TK VS Code extension.
+- Added the `insertGroupComment` and `useTuningFoldersForSimData` options to `ExtractionOptions`.
 - New naming conventions:
   - `s4pi` = Same as the old `tgi-name` naming convention (`S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`)
   - `tgi-only` = Same as the old `tgi` naming convention, minus the `S4` prefix (`TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml`)
 ### Changed
+- When the new `useTuningFoldersForSimData` option is true, the "SimData" subfolder will no longer be generated.
 - Changed naming conventions:
   - `tgi-name` = No longer includes the `S4` prefix (`TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`)
 ### Removed

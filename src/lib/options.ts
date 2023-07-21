@@ -89,6 +89,9 @@ export interface ExtractionOptions {
    * Whether or not to use primary subfolders when writing the files. This 
    * means tuning type for tuning files, and "SimData" for SimData files.
    * True by default.
+   * 
+   * Note: If `useTuningFoldersForSimData` is true, then the "SimData" folder
+   * and all of its subfolders will never be created.
    */
   usePrimarySubfolders: boolean;
 
@@ -96,8 +99,18 @@ export interface ExtractionOptions {
    * Whether or not to use secondary subfolders when writing the files. This 
    * means class for tuning files, and group for SimData files. True by
    * default.
+   * 
+   * Note: If `useTuningFoldersForSimData` is true, then the "SimData" folder
+   * and all of its subfolders will never be created.
    */
   useSecondarySubfolders: boolean;
+
+  /**
+   * Whether or not to write SimData files to the folder that contains their
+   * matching tuning. SimData files will have the same name, but with 'SimData'
+   * append before the file extension. True by default.
+   */
+  useTuningFoldersForSimData: boolean;
 };
 
 /**
@@ -123,5 +136,6 @@ export function setDefaultOptions(
     tuningManifest: options?.tuningManifest,
     usePrimarySubfolders: options?.usePrimarySubfolders ?? true,
     useSecondarySubfolders: options?.useSecondarySubfolders ?? true,
+    useTuningFoldersForSimData: options?.useTuningFoldersForSimData ?? true,
   };
 }

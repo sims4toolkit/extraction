@@ -81,6 +81,7 @@ export function extractFiles(
   if (startedMapping) options.eventListener?.("mapping-end");
 
   // extracting tuning
+  const tuningDirs = new Map<bigint, string>();
   if (options.extractTuning) {
     options.eventListener?.("extract-tuning-start");
     let currentCbt = 0;
@@ -97,6 +98,7 @@ export function extractFiles(
             outDir,
             entry.key.group,
             tuning,
+            tuningDirs,
             options as ExtractionOptions
           );
 
@@ -125,7 +127,13 @@ export function extractFiles(
       );
 
       simdatas.forEach((entry, i) => {
-        writeSimDataFile(outDir, entry, options as ExtractionOptions);
+        writeSimDataFile(
+          outDir,
+          entry,
+          tuningDirs,
+          options as ExtractionOptions
+        );
+
         options.eventListener?.(
           "simdata-written",
           currentDbpf,
@@ -148,12 +156,14 @@ export function extractFiles(
  * @param outDir Directory to output this file to
  * @param group Group of combined tuning that this tuning was found in
  * @param tuning Tuning file to write
+ * @param tuningDirs Mapping of tuning instances to the folders they are written to
  * @param options User options
  */
 function writeTuningFile(
   outDir: string,
   group: number,
   tuning: XmlResource,
+  tuningDirs: Map<bigint, string>,
   options: ExtractionOptions
 ) {
   const type = TuningResourceType.parseAttr(tuning.root.attributes.i);
@@ -168,6 +178,8 @@ function writeTuningFile(
     subfolders = path.join(subfolders, TuningResourceType[type] ?? "Unknown");
   if (options.useSecondarySubfolders)
     subfolders = path.join(subfolders, tuning.root.attributes.c ?? "Unknown");
+  if (options.useTuningFoldersForSimData)
+    tuningDirs.set(instance, subfolders);
   if (!fs.existsSync(subfolders)) fs.mkdirSync(subfolders, { recursive: true });
   const filepath = path.join(subfolders, filename);
   fs.writeFileSync(filepath, tuning.getBuffer());
@@ -178,20 +190,27 @@ function writeTuningFile(
  * 
  * @param outDir Directory to output this file to
  * @param simdata SimData entry to write
+ * @param tuningDirs Mapping of tuning instances to the folders they are written to
  * @param options User options
  */
 function writeSimDataFile(
   outDir: string,
   simdata: ResourceKeyPair<SimDataResource>,
+  tuningDirs: Map<bigint, string>,
   options: ExtractionOptions
 ) {
   const filename = getFileName(simdata.key, `${simdata.value.instance.name}.SimData`, options);
-  let subfolders = outDir;
-  if (options.usePrimarySubfolders)
-    subfolders = path.join(subfolders, "SimData");
-  if (options.useSecondarySubfolders)
-    subfolders = path.join(subfolders, SimDataGroup[simdata.key.group] ?? "Unknown");
-  if (!fs.existsSync(subfolders)) fs.mkdirSync(subfolders, { recursive: true });
+  let subfolders = options.useTuningFoldersForSimData
+    ? tuningDirs.get(simdata.key.instance)
+    : undefined;
+  if (!subfolders) {
+    subfolders = outDir;
+    if (options.usePrimarySubfolders)
+      subfolders = path.join(subfolders, "SimData");
+    if (options.useSecondarySubfolders)
+      subfolders = path.join(subfolders, SimDataGroup[simdata.key.group] ?? "Unknown");
+    if (!fs.existsSync(subfolders)) fs.mkdirSync(subfolders, { recursive: true });
+  }
   const filepath = path.join(subfolders, filename);
   fs.writeFileSync(filepath, simdata.value.toXmlDocument().toXml());
 }
