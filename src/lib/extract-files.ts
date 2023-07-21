@@ -171,7 +171,7 @@ function writeTuningFile(
   const key = { type, group, instance };
   const filename = getFileName(key, tuning.root.name, options);
   if (group && options.insertGroupComment) tuning.updateDom(dom => {
-    dom.children.unshift(new XmlCommentNode(`<!-- S4TK Group: ${formatResourceGroup(group)} -->`));
+    dom.children.unshift(new XmlCommentNode(`S4TK Group: ${formatResourceGroup(group)}`));
   });
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
