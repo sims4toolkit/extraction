@@ -47,6 +47,30 @@
         },
         {
           "displayType": "property",
+          "name": "includeDeltas",
+          "description": "Whether or not to include delta packages. True by default. Either this or includeFullBuilds needs to be true in order to extract anything.",
+          "type": {
+            "name": "boolean"
+          }
+        },
+        {
+          "displayType": "property",
+          "name": "includeFullBuilds",
+          "description": "Whether or not to include full packages. True by default. Either this or includeDeltas needs to be true in order to extract anything.",
+          "type": {
+            "name": "boolean"
+          }
+        },
+        {
+          "displayType": "property",
+          "name": "insertGroupComment",
+          "description": "Whether or not to include a comment that tells the S4TK VS Code extension which group to use instead of 0. True by default.",
+          "type": {
+            "name": "boolean"
+          }
+        },
+        {
+          "displayType": "property",
           "name": "namingConvention",
           "description": "Naming convention to use. \"s4s\" by default.",
           "type": {

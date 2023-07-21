@@ -36,12 +36,25 @@ export interface ExtractionOptions {
   includeFullBuilds: boolean;
 
   /**
+   * Whether or not to include a comment that tells the
+   * [S4TK VS Code extension](https://vscode.sims4toolkit.com/) which group to
+   * use instead of 0. True by default.
+   * 
+   * Comments will appear at the top of the document, such as:
+   * ```xml
+   * <!-- S4TK Group: 00000014 -->
+   * ```
+   */
+  insertGroupComment: boolean;
+
+  /**
    * Naming convention to use. Default is "s4s".
    * 
    * Options
    * - `s4s` -> `TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.filename.xml`
-   * - `tgi` -> `S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml`
-   * - `tgi-name` -> `S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`
+   * - `s4pi` -> `S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`
+   * - `tgi-name` -> `TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`
+   * - `tgi-only` -> `TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml`
    * - `name-only` -> `filename.xml`
    */
   namingConvention: NamingConvention;
@@ -102,6 +115,7 @@ export function setDefaultOptions(
     extractTuning: options?.extractTuning ?? true,
     includeDeltas: options?.includeDeltas ?? true,
     includeFullBuilds: options?.includeFullBuilds ?? true,
+    insertGroupComment: options?.insertGroupComment ?? true,
     namingConvention: options?.namingConvention ?? "s4s",
     restoreComments: options?.restoreComments ?? true,
     stringManifest: options?.stringManifest,

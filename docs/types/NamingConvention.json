@@ -16,8 +16,9 @@
           "displayType": "general",
           "paragraphs": [
             "\"s4s\"",
-            "\"tgi\"",
+            "\"s4pi\"",
             "\"tgi-name\"",
+            "\"tgi-only\"",
             "\"name-only\""
           ]
         }
@@ -35,12 +36,16 @@
               "value": "TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.name.xml"
             },
             {
-              "name": "tgi",
-              "value": "S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml"
+              "name": "s4pi",
+              "value": "S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.name.xml"
             },
             {
               "name": "tgi-name",
-              "value": "S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.name.xml"
+              "value": "TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.name.xml"
+            },
+            {
+              "name": "tgi-only",
+              "value": "TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml"
             },
             {
               "name": "name-only",

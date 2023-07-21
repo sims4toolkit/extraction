@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { XmlCommentNode } from "@s4tk/xml-dom";
+import { formatResourceGroup, formatResourceKey } from "@s4tk/hashing/formatting";
 import { CombinedTuningResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
 import { SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
-import { formatResourceKey } from "@s4tk/hashing/formatting";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
@@ -159,6 +160,9 @@ function writeTuningFile(
   const instance = BigInt(tuning.root.id);
   const key = { type, group, instance };
   const filename = getFileName(key, tuning.root.name, options);
+  if (group && options.insertGroupComment) tuning.updateDom(dom => {
+    dom.children.unshift(new XmlCommentNode(`<!-- S4TK Group: ${formatResourceGroup(group)} -->`));
+  });
   let subfolders = outDir;
   if (options.usePrimarySubfolders)
     subfolders = path.join(subfolders, TuningResourceType[type] ?? "Unknown");
@@ -207,10 +211,12 @@ function getFileName(
   switch (options.namingConvention) {
     case "s4s":
       return formatResourceKey(key, "!") + "." + filename + ".xml";
-    case "tgi":
+    case "s4pi":
       return "S4_" + formatResourceKey(key, "_") + ".xml";
     case "tgi-name":
-      return "S4_" + formatResourceKey(key, "_") + "." + filename + ".xml";
+      return formatResourceKey(key, "_") + "." + filename + ".xml";
+    case "tgi-only":
+      return formatResourceKey(key, "_") + ".xml";
     case "name-only":
       return filename + ".xml";
   }

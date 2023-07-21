@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2023/07/21
+### Added
+- Added the `insertGroupComment` option to `ExtractionOptions` for use with the S4TK VS Code extension.
+- New naming conventions:
+  - `s4pi` = Same as the old `tgi-name` naming convention (`S4_TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`)
+  - `tgi-only` = Same as the old `tgi` naming convention, minus the `S4` prefix (`TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.xml`)
+### Changed
+- Changed naming conventions:
+  - `tgi-name` = No longer includes the `S4` prefix (`TTTTTTTT_GGGGGGGG_IIIIIIIIIIIIIIII.filename.xml`)
+### Removed
+- Removed naming conventions:
+  - `tgi` = Replaced by approximate equal of `tgi-only` (see **Added**)
+
 ## [0.2.2] - 2023/07/19
 ### Fixed
 - Update dependency on @s4tk/models to fix issue where 'n' attribute doesn't always appear first.

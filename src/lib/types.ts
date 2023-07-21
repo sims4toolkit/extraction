@@ -8,7 +8,7 @@ export type ManifestType = "properties" | "json" | "xml";
 /**
  * How extracted files are named.
  */
-export type NamingConvention = "s4s" | "tgi" | "tgi-name" | "name-only";
+export type NamingConvention = "s4s" | "s4pi" | "tgi-name" | "tgi-only" | "name-only";
 
 /**
  * An event that occurs during extraction. For use with logging/UI.
