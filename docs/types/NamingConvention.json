@@ -26,14 +26,14 @@
     },
     {
       "title": "Previews",
-      "description": "These are what the resulting filenames will look like. T = type, G = group, I = instance, and the name comes from either tuning or SimData.",
+      "description": "These are what the resulting filenames will look like. T = type, G = group, I = instance, name comes from the \"n\" attribute (or the Instance's \"name\" for SimData), and TuningType is SimData or the type as it appears in TuningTypeResource, plus Tuning if it did not already end with that.",
       "content": [
         {
           "displayType": "enum",
           "values": [
             {
               "name": "s4s",
-              "value": "TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.name.xml"
+              "value": "TTTTTTTT!GGGGGGGG!IIIIIIIIIIIIIIII.name.TuningType.xml"
             },
             {
               "name": "s4pi",

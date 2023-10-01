@@ -18,7 +18,7 @@ export function indexSimulationPackages(
   const latestCombineds = new Map<number, PathAndPosition>();
   const latestSimDatas = new Map<bigint, PathAndPosition>();
 
-  const indexPackage = (filepath: string) => {
+  const indexPackage = (_: string, filepath: string) => {
     const resources = Package.indexResources(filepath, {
       limit: options.extractSimData ? undefined : 1,
       keepDeletedRecords: true,
@@ -65,7 +65,7 @@ export function indexSimulationPackages(
 export function indexStringTablePackages(filepaths: PackagePaths): FileMap {
   const latestStbls = new Map<bigint, PathAndPosition>();
 
-  const indexPackage = (filepath: string) => {
+  const indexPackage = (_: string, filepath: string) => {
     Package.indexResources(filepath, {
       keepDeletedRecords: true,
       resourceFilter(type) {

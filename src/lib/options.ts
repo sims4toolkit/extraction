@@ -86,6 +86,12 @@ export interface ExtractionOptions {
   tuningManifest?: ManifestType;
 
   /**
+   * Whether or not to use the pack id (e.g. BG, GP01, SP24) as the first
+   * subfolder for all files. False by default.
+   */
+  usePackSubfolders: boolean;
+
+  /**
    * Whether or not to use primary subfolders when writing the files. This 
    * means tuning type for tuning files, and "SimData" for SimData files.
    * True by default.
@@ -94,6 +100,13 @@ export interface ExtractionOptions {
    * and all of its subfolders will never be created.
    */
   usePrimarySubfolders: boolean;
+
+  /**
+   * For usePrimarySubfolders, whether to format the tuning types as they
+   * appear in tunings, instead of the more friendly PascalCase.
+   * False by default.
+   */
+  useRawPrimarySubfolderNames: boolean;
 
   /**
    * Whether or not to use secondary subfolders when writing the files. This 
@@ -134,7 +147,9 @@ export function setDefaultOptions(
     stringManifest: options?.stringManifest,
     targetLocale: options?.targetLocale ?? StringTableLocale.English,
     tuningManifest: options?.tuningManifest,
+    usePackSubfolders: options?.usePackSubfolders ?? false,
     usePrimarySubfolders: options?.usePrimarySubfolders ?? true,
+    useRawPrimarySubfolderNames: options?.useRawPrimarySubfolderNames ?? false,
     useSecondarySubfolders: options?.useSecondarySubfolders ?? true,
     useTuningFoldersForSimData: options?.useTuningFoldersForSimData ?? true,
   };
