@@ -133,8 +133,24 @@
         },
         {
           "displayType": "property",
+          "name": "usePackSubfolders",
+          "description": "Whether or not to use the pack id (e.g. BG, GP01, SP24) as the first subfolder for all files. False by default.",
+          "type": {
+            "name": "boolean"
+          }
+        },
+        {
+          "displayType": "property",
           "name": "usePrimarySubfolders",
           "description": "Whether or not to use primary subfolders when writing the files. This means tuning type for tuning files, and \"SimData\" for SimData files. True by default.\n\nNote: If useTuningFoldersForSimData is true, then the \"SimData\" folder and all of its subfolders will never be created.",
+          "type": {
+            "name": "boolean"
+          }
+        },
+        {
+          "displayType": "property",
+          "name": "useRawPrimarySubfolderNames",
+          "description": "For usePrimarySubfolders, whether to format the tuning types as they appear in tunings, instead of the more friendly PascalCase. False by default.",
           "type": {
             "name": "boolean"
           }

@@ -3,7 +3,7 @@ import path from "path";
 import { XmlCommentNode } from "@s4tk/xml-dom";
 import { formatResourceGroup, formatResourceKey } from "@s4tk/hashing/formatting";
 import { CombinedTuningResource, Package, SimDataResource, XmlResource } from "@s4tk/models";
-import { SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
+import { BinaryResourceType, SimDataGroup, TuningResourceType } from "@s4tk/models/enums";
 import type { ResourceKey, ResourceKeyPair } from "@s4tk/models/types";
 import { locateSimulationPackages, locateStringTablePackages } from "./locate-packages";
 import { indexSimulationPackages, indexStringTablePackages } from "./index-packages";
@@ -60,9 +60,8 @@ export function extractFiles(
     if (options.restoreComments) {
       commentMap = stringMap;
       if (options.extractTuning) stringMap.forEach((value, key) => {
-        if (!key.startsWith("0x0")) return;
         const trimmedKey = key.replace(/^0x0+/, "0x");
-        commentMap.set(trimmedKey, value);
+        commentMap.set(trimmedKey, '"' + value + '"');
       });
     }
   }
@@ -97,6 +96,7 @@ export function extractFiles(
           writeTuningFile(
             outDir,
             entry.key.group,
+            simPaths.source.get(filepath) ?? simPaths.delta.get(filepath),
             tuning,
             tuningDirs,
             options as ExtractionOptions
@@ -130,6 +130,7 @@ export function extractFiles(
         writeSimDataFile(
           outDir,
           entry,
+          simPaths.source.get(filepath) ?? simPaths.delta.get(filepath),
           tuningDirs,
           options as ExtractionOptions
         );
@@ -155,6 +156,7 @@ export function extractFiles(
  * 
  * @param outDir Directory to output this file to
  * @param group Group of combined tuning that this tuning was found in
+ * @param pack Code of the pack the tuning was found in
  * @param tuning Tuning file to write
  * @param tuningDirs Mapping of tuning instances to the folders they are written to
  * @param options User options
@@ -162,6 +164,7 @@ export function extractFiles(
 function writeTuningFile(
   outDir: string,
   group: number,
+  pack: string,
   tuning: XmlResource,
   tuningDirs: Map<bigint, string>,
   options: ExtractionOptions
@@ -174,8 +177,13 @@ function writeTuningFile(
     dom.children.unshift(new XmlCommentNode(`S4TK Group: ${formatResourceGroup(group)}`));
   });
   let subfolders = outDir;
-  if (options.usePrimarySubfolders)
-    subfolders = path.join(subfolders, TuningResourceType[type] ?? "Unknown");
+  if (options.usePackSubfolders)
+    subfolders = path.join(subfolders, pack);
+  if (options.usePrimarySubfolders) {
+    let sub = TuningResourceType[type];
+    if (options.useRawPrimarySubfolderNames) sub = TuningResourceType.getAttr(type) || "tun";
+    subfolders = path.join(subfolders, sub ?? "Unknown");
+  }
   if (options.useSecondarySubfolders)
     subfolders = path.join(subfolders, tuning.root.attributes.c ?? "Unknown");
   if (options.useTuningFoldersForSimData)
@@ -190,12 +198,14 @@ function writeTuningFile(
  * 
  * @param outDir Directory to output this file to
  * @param simdata SimData entry to write
+ * @param pack Code of the pack the SimData was found in
  * @param tuningDirs Mapping of tuning instances to the folders they are written to
  * @param options User options
  */
 function writeSimDataFile(
   outDir: string,
   simdata: ResourceKeyPair<SimDataResource>,
+  pack: string,
   tuningDirs: Map<bigint, string>,
   options: ExtractionOptions
 ) {
@@ -205,6 +215,8 @@ function writeSimDataFile(
     : undefined;
   if (!subfolders) {
     subfolders = outDir;
+    if (options.usePackSubfolders)
+      subfolders = path.join(subfolders, pack);
     if (options.usePrimarySubfolders)
       subfolders = path.join(subfolders, "SimData");
     if (options.useSecondarySubfolders)
@@ -229,7 +241,10 @@ function getFileName(
 ): string {
   switch (options.namingConvention) {
     case "s4s":
-      return formatResourceKey(key, "!") + "." + filename + ".xml";
+      let type = TuningResourceType[key.type];
+      if (!type) type = BinaryResourceType[key.type];
+      else if (!type.endsWith("Tuning")) type += "Tuning";
+      return formatResourceKey(key, "!") + "." + filename + "." + type + ".xml";
     case "s4pi":
       return "S4_" + formatResourceKey(key, "_") + ".xml";
     case "tgi-name":

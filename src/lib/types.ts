@@ -39,12 +39,13 @@ export type ExtractionEventListener
 export type FileMap = Map<string, ResourcePosition[]>;
 
 /**
- * A pairing of source and delta package paths. Source packages should be read
- * first, and overriden by delta packages if they contain the same resources.
+ * A pair of maps of source and delta package paths to their pack codes.
+ * Source packages should be read first, and overriden by delta packages
+ * if they contain the same resources.
  */
 export interface PackagePaths {
-  source: string[];
-  delta: string[];
+  source: Map<string, string>;
+  delta: Map<string, string>;
 }
 
 /**
