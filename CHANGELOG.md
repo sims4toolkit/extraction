@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2024/03/10
+### Changed
+- Update dependency on @s4tk/models to 0.6.14 (new tuning/SimData types)
+
 ## [0.3.1] - 2023/10/01
 ### Changed
 - Update dependency on @s4tk/models to 0.6.10 (new tuning/SimData types)
